@@ -1,0 +1,5 @@
+---
+terraform_requirement_libs:
+  - gnupg
+  - software-properties-common
+  - curl

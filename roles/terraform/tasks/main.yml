@@ -1,0 +1,28 @@
+---
+
+- name: install terraform
+  apt:
+    name: "{{ terraform_requirement_libs }}" 
+    state: present
+    update_cache: yes
+  become: yes
+- name: Add the HashiCorp GPG key
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+  become: yes
+- name: get os version
+  shell: lsb_release -cs
+  register: os_version
+  become: yes
+- name: Add the official HashiCorp repository
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ os_version.stdout }} main
+  become: yes
+- name: install terraform
+  apt:
+    name: terraform
+    state: latest
+    update_cache: yes
+  become: yes
+  
