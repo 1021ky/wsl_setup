@@ -1,0 +1,19 @@
+---
+
+- name: Unarchive go bin
+  ansible.builtin.unarchive:
+    src: https://go.dev/dl/go{{ go_version }}.linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+    mode: 755
+  become: yes
+- name: add profile file
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.profile"
+    state: touch
+- name: add path if it does not exist
+  ansible.builtin.lineinfile:
+    path: "{{ lookup('env', 'HOME') }}/.profile"
+    line: export PATH=$PATH:/usr/local/go/bin
+    create: yes
+  
