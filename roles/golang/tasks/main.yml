@@ -7,6 +7,11 @@
     remote_src: yes
     mode: 755
   become: yes
+- name: change permissions
+  ansible.builtin.file:
+    path: /usr/local/go
+    mode: '755'
+  become: yes
 - name: add profile file
   file:
     path: "{{ lookup('env', 'HOME') }}/.profile"
