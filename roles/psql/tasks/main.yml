@@ -1,0 +1,9 @@
+---
+
+- name: install psql client
+  apt:
+    name: postgresql-client 
+    state: present
+    update_cache: yes
+  become: yes
+  
