@@ -5,12 +5,12 @@
     src: https://go.dev/dl/go{{ go_version }}.linux-amd64.tar.gz
     dest: /usr/local
     remote_src: yes
-    mode: 755
+    mode: 775
   become: yes
 - name: change permissions
   ansible.builtin.file:
     path: /usr/local/go
-    mode: '755'
+    mode: '775'
   become: yes
 - name: add profile file
   file:
