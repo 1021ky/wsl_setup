@@ -55,4 +55,10 @@
     update_cache: yes
   become: yes
 
-
+- name: bat symbolic link
+  ansible.builtin.file:
+    src: /usr/bin/batcat
+    dest: /usr/bin/bat
+    state: link
+    mode: 755
+  become: yes
