@@ -1,8 +1,7 @@
 ---
 
-- name: add path if it does not exist
+- name: add defult directory if it does not exist
   ansible.builtin.lineinfile:
     path: "{{ lookup('env', 'HOME') }}/.bashrc"
     line: cd /mnt/c/Users/ksanc/Documents/work
     create: yes
-  
