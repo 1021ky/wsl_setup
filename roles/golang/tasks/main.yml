@@ -21,4 +21,4 @@
     path: "{{ lookup('env', 'HOME') }}/.profile"
     line: export PATH=$PATH:/usr/local/go/bin
     create: yes
-  
+
