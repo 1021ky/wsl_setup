@@ -15,19 +15,31 @@
     create: yes
   notify: source_bashrc
 
+- name: check mcfly
+  stat:
+    path: "/usr/local/bin/mcfly"
+  register: mcfly_file
+
+- name: exists check
+  debug:
+    msg: "complete"
+
 - name: Download mcfly installer
   get_url:
     url: https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh
     dest: /tmp/mcfly-installer.sh
+  when: mcfly_file.stat.exists == false
 
 - name: Execute the mcfly installer
   shell: cat /tmp/mcfly-installer.sh | sh -s  -- --git cantino/mcfly --force
+  when: mcfly_file.stat.exists == false
   become: yes
 
 - name: Remove the mcfly installer
   file:
     path: /tmp/mcfly-installer.sh
     state: absent
+  when: mcfly_file.stat.exists == false
 
 - name: add defult directory if it does not exist
   ansible.builtin.lineinfile:
@@ -35,3 +47,12 @@
     line: 'eval "$(mcfly init bash)"'
     create: yes
   notify: source_bashrc
+
+- name: add modern_commands
+  apt:
+    name: "{{ modern_commands }}"
+    state: present
+    update_cache: yes
+  become: yes
+
+
