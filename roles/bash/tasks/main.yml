@@ -55,10 +55,16 @@
     update_cache: yes
   become: yes
 
-- name: bat symbolic link
+- name: mkdir for bat
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.local/bin"
+    state: directory
+    recurse: yes
+
+- name: bat symbolic link to avoid a name clash with another package
   ansible.builtin.file:
     src: /usr/bin/batcat
-    dest: /usr/bin/bat
+    dest: "{{ lookup('env', 'HOME') }}/.local/bin/bat"
     state: link
     mode: 755
   become: yes
