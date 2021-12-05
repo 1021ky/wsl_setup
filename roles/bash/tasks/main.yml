@@ -5,3 +5,10 @@
     path: "{{ lookup('env', 'HOME') }}/.bashrc"
     line: cd /mnt/c/Users/ksanc/Documents/work
     create: yes
+
+
+- name: add defult directory if it does not exist
+  ansible.builtin.lineinfile:
+    path: "{{ lookup('env', 'HOME') }}/.bashrc"
+    line: "export PS1='\\[\\033[0;36m\\]\\u\\[\\033[0;32m\\]@\\h\\[\\033[1;30m\\]:\\w\\n\\[\\033[0m\\]$ '"
+    create: yes
