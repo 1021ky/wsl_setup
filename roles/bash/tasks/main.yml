@@ -5,6 +5,7 @@
     path: "{{ lookup('env', 'HOME') }}/.bashrc"
     line: cd /mnt/c/Users/ksanc/Documents/work
     create: yes
+  notify: source_bashrc
 
 
 - name: add defult directory if it does not exist
@@ -12,3 +13,25 @@
     path: "{{ lookup('env', 'HOME') }}/.bashrc"
     line: "export PS1='\\[\\033[0;36m\\]\\u\\[\\033[0;32m\\]@\\h\\[\\033[1;30m\\]:\\w\\n\\[\\033[0m\\]$ '"
     create: yes
+  notify: source_bashrc
+
+- name: Download mcfly installer
+  get_url:
+    url: https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh
+    dest: /tmp/mcfly-installer.sh
+
+- name: Execute the mcfly installer
+  shell: cat /tmp/mcfly-installer.sh | sh -s  -- --git cantino/mcfly --force
+  become: yes
+
+- name: Remove the mcfly installer
+  file:
+    path: /tmp/mcfly-installer.sh
+    state: absent
+
+- name: add defult directory if it does not exist
+  ansible.builtin.lineinfile:
+    path: "{{ lookup('env', 'HOME') }}/.bashrc"
+    line: 'eval "$(mcfly init bash)"'
+    create: yes
+  notify: source_bashrc
