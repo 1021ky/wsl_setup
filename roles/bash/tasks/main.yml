@@ -20,10 +20,6 @@
     path: "/usr/local/bin/mcfly"
   register: mcfly_file
 
-- name: exists check
-  debug:
-    msg: "complete"
-
 - name: Download mcfly installer
   get_url:
     url: https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh
