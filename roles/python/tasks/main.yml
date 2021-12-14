@@ -1,0 +1,34 @@
+---
+
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ pyenv_requirement_packages }}"
+  become: yes
+
+- name: check pyenv
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.pyenv"
+  register: pyenv_file
+
+- name: Download pyenv installer
+  get_url:
+    url: https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer
+    dest: /tmp/pyenv-installer.sh
+  when: pyenv_file.stat.exists == false
+
+- name: Execute the pyenv installer
+  shell: cat /tmp/pyenv-installer.sh | bash
+  when: pyenv_file.stat.exists == false
+  notify: modify_bashrc
+
+- name: install python with pyenv
+  shell: 'bash -lc "pyenv install -s {{ item }}"'
+  loop: "{{ python_versions }}"
+
+- name: do pyenv rehash
+  shell: 'bash -lc "pyenv rehash"'
+
+- name: set global use python version
+  shell: 'bash -lc "pyenv global {{ global_use_python_version }}"'

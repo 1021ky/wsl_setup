@@ -1,0 +1,23 @@
+---
+
+- name: add path if it does not exist
+  ansible.builtin.lineinfile:
+    path: "{{ lookup('env', 'HOME') }}/.bashrc"
+    line: export PATH=$PATH:{{ lookup('env', 'HOME') }}/.pyenv/bin
+    create: yes
+
+- name: add line to add path
+  ansible.builtin.lineinfile:
+    path: "{{ lookup('env', 'HOME') }}/.bashrc"
+    line: eval "$(pyenv init --path)"
+    create: yes
+
+- name: add line to load pyenv-virtualenv automatically
+  ansible.builtin.lineinfile:
+    path: "{{ lookup('env', 'HOME') }}/.bashrc"
+    line: eval "$(pyenv virtualenv-init -)"
+    create: yes
+
+- name: source_bashrc
+  shell: bash -lc "source ~/.bashrc"
+
