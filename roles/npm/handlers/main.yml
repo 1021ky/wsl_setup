@@ -1,0 +1,4 @@
+---
+
+- name: modify_bashrc
+  include_tasks: ./tasks/modify_bashrc.yml
