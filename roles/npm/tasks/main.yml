@@ -17,13 +17,7 @@
   notify: modify_bashrc
 
 - name: Execute nvm.sh
-  shell: . ~/.nvm//nvm.sh
-
-- name: install npm16
-  shell: nvm install 16
-
-- name: nvm use npm16
-  shell: nvm use 16
+  shell: . {{ lookup('env', 'HOME') }}/.nvm/nvm.sh && nvm install 16 && nvm alias default 16
 
 - name: install npm packages
   npm:
