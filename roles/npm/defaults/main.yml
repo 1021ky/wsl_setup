@@ -5,4 +5,4 @@ nodejs_packages:
   - npm
 
 npm_packages:
-  - aws-cdk
+  - aws-cdk@1.100
