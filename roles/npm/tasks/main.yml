@@ -1,12 +1,29 @@
 ---
 
-- name: install nodejs
-  apt:
-    name: "{{ item }}"
-    state: present
-    update_cache: yes
-  loop: "{{ nodejs_packages }}"
-  become: yes
+- name: check nvm
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.nvm"
+  register: nvm_file
+
+- name: Download nvm installer
+  get_url:
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh
+    dest: /tmp/nvm-installer.sh
+  when: nvm_file.stat.exists == false
+
+- name: Execute the nvm installer
+  shell: cat /tmp/nvm-installer.sh | bash
+  when: nvm_file.stat.exists == false
+  notify: modify_bashrc
+
+- name: Execute nvm.sh
+  shell: . ~/.nvm//nvm.sh
+
+- name: install npm16
+  shell: nvm install 16
+
+- name: nvm use npm16
+  shell: nvm use 16
 
 - name: install npm packages
   npm:
