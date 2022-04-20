@@ -1,0 +1,25 @@
+---
+
+- name: check dagger
+  stat:
+    path: "/usr/local/bin/dagger"
+  register: dagger_file
+
+- name: Download dagger installer
+  get_url:
+    url: https://dl.dagger.io/dagger/install.sh
+    dest: /tmp/dagger-installer.sh
+  when: dagger_file.stat.exists == false
+
+- name: Execute the dagger installer
+  shell: sh /tmp/dagger-installer.sh
+  args:
+    chdir: /usr/local
+  when: dagger_file.stat.exists == false
+  become: yes
+
+- name: Remove the dagger installer
+  file:
+    path: /tmp/dagger-installer.sh
+    state: absent
+  when: dagger_file.stat.exists == false

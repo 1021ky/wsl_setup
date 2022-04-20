@@ -5,3 +5,4 @@
     - awscli
     - golang
     - bash
+    - dagger
