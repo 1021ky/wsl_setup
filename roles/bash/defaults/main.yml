@@ -2,3 +2,6 @@
 modern_commands:
   - fd-find
   - bat
+
+util_commands:
+  - zip

@@ -64,3 +64,10 @@
     state: link
     mode: 755
   become: yes
+
+- name: add util_commands
+  apt:
+    name: "{{ util_commands }}"
+    state: present
+    update_cache: yes
+  become: yes
